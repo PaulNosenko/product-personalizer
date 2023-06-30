@@ -1,5 +1,6 @@
 import styles from './OptionSize.module.scss';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 const OptionSize = (props) => {
     return (<div className={styles.sizes}>
@@ -12,6 +13,12 @@ const OptionSize = (props) => {
             })}
         </ul>
     </div>);
+}
+
+OptionSize.propTypes = {
+    sizes: PropTypes.array,
+    currentSize: PropTypes.string,
+    changeSize: PropTypes.func
 }
 
 export default OptionSize;
