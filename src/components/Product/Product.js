@@ -3,14 +3,12 @@ import clsx from 'clsx';
 import Button from '../Button/Button';
 import PropTypes from 'prop-types'
 import { useState } from 'react';
+import ProductImage from '../ProductImage/ProductImage';
+import ProductForm from '../ProductForm/ProductForm';
 
 const Product = props => {
   const [currentColor, setCurrentColor] = useState(props.colors[0]);
   const [currentSize, setCurrentSize] = useState(props.sizes[0].name);
-
-  const prepareColorClassName = color => {
-    return styles['color' + color[0].toUpperCase() + color.substr(1).toLowerCase()];
-  }
 
   const changeSize = (selectedSize) => {
     setCurrentSize(selectedSize);
@@ -36,43 +34,25 @@ const Product = props => {
 
   return (
     <article className={styles.product}>
-      <div className={styles.imageContainer}>
-        <img
-          className={styles.image}
-          alt="Kodilla shirt"
-          src={`${process.env.PUBLIC_URL}/images/products/shirt-${props.name}--${currentColor}.jpg`} />
-      </div>
+      <ProductImage title={props.title} name={props.name} currentColor={currentColor} />
+
       <div>
         <header>
           <h2 className={styles.name}>{props.title}</h2>
           <span className={styles.price}>Price: {getPrice()}$</span>
         </header>
-        <form onSubmit={addToCart}>
-          <div className={styles.sizes}>
-            <h3 className={styles.optionLabel}>Sizes</h3>
-            <ul className={styles.choices}>
-              {props.sizes.map(s => {
-                return <li key={s.name}>
-                  <button type="button" onClick={changeSize.bind(null, s.name)} className={clsx(s.name === currentSize && styles.active)}>{s.name}</button>
-                </li>
-              })}
-            </ul>
-          </div>
-          <div className={styles.colors}>
-            <h3 className={styles.optionLabel}>Colors</h3>
-            <ul className={styles.choices}>
-              {props.colors.map(c => {
-                return <li key={c}>
-                  <button type="button" onClick={changeColor.bind(null, c)} className={clsx(prepareColorClassName(c), c === currentColor && styles.active)} />
-                </li>
-              })}
-            </ul>
-          </div>
-          <Button className={styles.button}>
-            <span className="fa fa-shopping-cart" />
-          </Button>
-        </form>
+
+        <ProductForm
+          onSubmitAction={addToCart}
+          currentSize={currentSize}
+          currentColor={currentColor}
+          sizes={props.sizes}
+          colors={props.colors}
+          changeSize={changeSize}
+          changeColor={changeColor}
+        />
       </div>
+
     </article>
   )
 };
